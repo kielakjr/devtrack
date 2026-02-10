@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Topbar from "@/components/Topbar";
+import Topbar from "@/components/layout/Topbar";
 import "@/app/globals.css";
-import Sidebar from "@/components/Sidebar";
+import Sidebar from "@/components/layout/Sidebar";
 
 export const metadata: Metadata = {
   title: "DevTrack",
