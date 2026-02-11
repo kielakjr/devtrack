@@ -1,7 +1,21 @@
-import { SignupFormSchema, FormState, LoginFormSchema } from '@/lib/definitions'
-import { createUser } from '@/lib/services/user'
+'use server';
 
-export async function signup(state: FormState, formData: FormData) {
+import { SignupFormSchema, FormState, LoginFormSchema } from '@/lib/definitions'
+import { createUser, findUserByEmail } from '@/lib/services/user'
+import bcrypt from 'bcrypt'
+import { int } from 'zod';
+
+interface AuthResult {
+  user?: any;
+  errors?: {
+    name?: string[];
+    email?: string[];
+    password?: string[];
+    form?: string[];
+  };
+}
+
+export async function signup(state: FormState, formData: FormData): Promise<AuthResult> {
   const validatedFields = SignupFormSchema.safeParse({
     name: formData.get('name'),
     email: formData.get('email'),
@@ -27,7 +41,7 @@ export async function signup(state: FormState, formData: FormData) {
   }
 }
 
-export async function login(state: FormState, formData: FormData) {
+export async function login(state: FormState, formData: FormData): Promise<AuthResult> {
   const validatedFields = LoginFormSchema.safeParse({
     email: formData.get('email'),
     password: formData.get('password'),
