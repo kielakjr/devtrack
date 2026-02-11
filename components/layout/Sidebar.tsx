@@ -1,7 +1,7 @@
 import React from 'react'
 import NavLink from '@/components/ui/NavLink';
 
-const Sidebar = () => {
+const Sidebar: React.FC = () => {
 
   return (
     <aside className="w-64 bg-background p-4 border-r border-border mt-0">

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Topbar = () => {
+const Topbar: React.FC = () => {
   return (
     <header className="w-full bg-background p-4 flex items-center justify-between border-b border-border">
       <h1 className="text-2xl font-bold">DevTrack</h1>
