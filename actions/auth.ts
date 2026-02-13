@@ -3,16 +3,15 @@
 import { SignupFormSchema, FormState, LoginFormSchema } from '@/lib/definitions'
 import { createUser, findUserByEmail } from '@/lib/services/user'
 import bcrypt from 'bcrypt'
-import { int } from 'zod';
 
 interface AuthResult {
   user?: any;
   errors?: {
-    name?: string[];
-    email?: string[];
-    password?: string[];
-    form?: string[];
-  };
+    name?: string[]
+    email?: string[]
+    password?: string[]
+    form?: string[]
+  }
 }
 
 export async function signup(state: FormState, formData: FormData): Promise<AuthResult> {
@@ -44,7 +43,6 @@ export async function signup(state: FormState, formData: FormData): Promise<Auth
 export async function login(state: FormState, formData: FormData): Promise<AuthResult> {
   const validatedFields = LoginFormSchema.safeParse({
     email: formData.get('email'),
-    password: formData.get('password'),
   })
 
   if (!validatedFields.success) {
@@ -53,13 +51,14 @@ export async function login(state: FormState, formData: FormData): Promise<AuthR
     }
   }
 
-  const { email, password } = validatedFields.data
+  const { email } = validatedFields.data
+  const password = formData.get('password') as string
   try {
     const user = await findUserByEmail(email)
     if (!user) {
       return {
         errors: {
-          form: ["User not found"],
+          form: ["Invalid credentials"],
         },
       }
     }

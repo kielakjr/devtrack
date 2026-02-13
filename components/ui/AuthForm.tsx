@@ -14,6 +14,11 @@ const AuthForm: React.FC<AuthFormProps> = ({ type }) => {
   return (
     <form className="w-full max-w-md p-8 bg-background rounded shadow text-primary border-border border -mt-20" action={action}>
       <h2 className="text-2xl font-bold mb-6">{type === "login" ? "Login" : "Register"}</h2>
+      {state?.errors?.form && (
+        <div className="mb-4 text-red-500">
+          {state.errors.form}
+        </div>
+      )}
       {type === "register" && (
         <div className="mb-4">
           <label htmlFor="name" className="block text-sm font-medium mb-1">
