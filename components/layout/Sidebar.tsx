@@ -8,7 +8,7 @@ const Sidebar: React.FC = () => {
       <nav className="space-y-2">
         <NavLink href="/dashboard">Dashboard</NavLink>
         <NavLink href="/projects">Projects</NavLink>
-        <NavLink href="/teams">Teams</NavLink>
+        <NavLink href="/repos">Repos</NavLink>
         <NavLink href="/settings">Settings</NavLink>
       </nav>
     </aside>
