@@ -9,7 +9,7 @@ const Topbar: React.FC = () => {
 
   return (
     <header className="w-full bg-background p-4 flex items-center justify-between border-b border-border">
-      <h1 className="text-2xl font-bold">DevTrack</h1>
+      <Link href="/" className="text-2xl font-bold text-primary">DevTrack</Link>
       <div className="flex items-center space-x-4">
         {session ? (
           <button

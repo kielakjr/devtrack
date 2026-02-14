@@ -1,30 +1,16 @@
-import type { Metadata } from "next";
-import Topbar from "@/components/layout/Topbar";
-import "@/app/globals.css";
 import Sidebar from "@/components/layout/Sidebar";
-import Providers from "@/components/Providers";
 
-export const metadata: Metadata = {
-  title: "DevTrack",
-  description: "A project management tool built with Next.js and Tailwind CSS.",
-};
-
-export default function RootLayout({
+export default function PublicLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="antialiased bg-background text-primary">
-        <Providers>
-          <Topbar />
-          <main className="flex">
-            <Sidebar />
-            {children}
-          </main>
-        </Providers>
-      </body>
-    </html>
-  );
+    <div className="min-h-screen bg-background text-primary">
+      <main className="flex">
+        <Sidebar />
+        {children}
+      </main>
+    </div>
+  )
 }
