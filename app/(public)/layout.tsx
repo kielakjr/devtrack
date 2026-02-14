@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Topbar from "@/components/layout/Topbar";
 import "@/app/globals.css";
 import Sidebar from "@/components/layout/Sidebar";
+import Providers from "@/components/Providers";
 
 export const metadata: Metadata = {
   title: "DevTrack",
@@ -16,11 +17,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased bg-background text-primary">
-        <Topbar />
-        <main className="flex">
-          <Sidebar />
-          {children}
-        </main>
+        <Providers>
+          <Topbar />
+          <main className="flex">
+            <Sidebar />
+            {children}
+          </main>
+        </Providers>
       </body>
     </html>
   );
