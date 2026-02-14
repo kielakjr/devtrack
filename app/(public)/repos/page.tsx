@@ -1,55 +1,27 @@
-'use client';
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+'use server';
+import { getGitHubRepos } from "@/lib/github"
 
-type Repo = {
-  id: number;
-  name: string;
-  html_url: string;
-};
-
-const MyRepos = () => {
-  const { data: session } = useSession();
-  const [repos, setRepos] = useState<Repo[]>([]);
-
-  useEffect(() => {
-    if (!session?.user?.accessToken) return;
-
-    const fetchRepos = async () => {
-      try {
-        const res = await fetch("https://api.github.com/user/repos", {
-          headers: {
-            Authorization: `Bearer ${session.user.accessToken}`
-          }
-        });
-        if (!res.ok) {
-          console.error("GitHub API error:", res.statusText);
-          setRepos([]);
-          return;
-        }
-        const data: Repo[] = await res.json();
-        setRepos(data);
-      } catch (err) {
-        console.error(err);
-        setRepos([]);
-      }
-    };
-
-    fetchRepos();
-  }, [session]);
+export default async function ReposPage() {
+  const repos = await getGitHubRepos()
 
   return (
-    <div>
-      <h2>Your Repos</h2>
-      <ul>
-        {repos.map(repo => (
-          <li key={repo.id}>
-            <a href={repo.html_url} target="_blank" rel="noreferrer">{repo.name}</a>
-          </li>
-        ))}
-      </ul>
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4">Repos</h1>
+      <p>List of repositories will go here.</p>
+      {repos.length === 0 ? (
+        <p>No repositories found.</p>
+      ) : (
+        <ul className="space-y-2">
+          {repos.map((repo: any) => (
+            <li key={repo.id} className="border p-4 rounded">
+              <a href={repo.html_url} target="_blank" rel="noopener noreferrer" className="text-blue-500 font-semibold">
+                {repo.name}
+              </a>
+              <p className="text-sm text-gray-600">{repo.description}</p>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
-  );
-};
-
-export default MyRepos;
+  )
+}
