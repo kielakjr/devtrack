@@ -1,9 +1,9 @@
 'use server';
-import { getGitHubRepos, GitHubRepo } from "@/lib/github"
+import { getReposToImport, GitHubRepo } from "@/lib/github"
 import Repo from "@/components/ui/Repo";
 
 export default async function ReposPage() {
-  const repos = await getGitHubRepos()
+  const repos = await getReposToImport()
 
   return (
     <div className="p-4">

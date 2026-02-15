@@ -74,7 +74,7 @@ model Project {
   id        String   @id @default(cuid())
   name      String
   description String?
-  githubRepo String?
+  githubRepo String
 
   userId    String
   user      User @relation(fields: [userId], references: [id])
