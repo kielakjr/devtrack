@@ -1,7 +1,7 @@
 'use server';
 import { auth } from "@/auth";
 
-interface GitHubRepo {
+export interface GitHubRepo {
   id: number;
   name: string;
   html_url: string;

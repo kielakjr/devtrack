@@ -17,11 +17,15 @@ datasource db {
 model User {
   id            String          @id @default(cuid())
   name          String?
-  email         String          @unique
+  email         String?          @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
+
+  projects      Project[]
+  courses       Course[]
+  studySessions StudySession[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -64,4 +68,62 @@ model VerificationToken {
   expires    DateTime
 
   @@id([identifier, token])
+}
+
+model Project {
+  id        String   @id @default(cuid())
+  name      String
+  description String?
+  githubRepo String?
+
+  userId    String
+  user      User @relation(fields: [userId], references: [id])
+
+  tasks     Task[]
+  sessions  StudySession[]
+
+  createdAt DateTime @default(now())
+}
+
+model Task {
+  id        String @id @default(cuid())
+  title     String
+  completed Boolean @default(false)
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id])
+}
+
+model Course {
+  id          String @id @default(cuid())
+  title       String
+  platform    String?
+  totalHours  Float?
+
+  userId      String
+  user        User @relation(fields: [userId], references: [id])
+
+  sessions    StudySession[]
+}
+
+model StudySession {
+  id        String   @id @default(cuid())
+
+  startedAt DateTime
+  endedAt   DateTime?
+
+  durationMinutes Int?
+
+  userId    String
+  user      User @relation(fields: [userId], references: [id])
+
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id])
+
+  courseId  String?
+  course    Course? @relation(fields: [courseId], references: [id])
+
+  note      String?
+
+  createdAt DateTime @default(now())
 }
