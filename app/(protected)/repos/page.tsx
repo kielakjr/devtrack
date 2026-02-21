@@ -6,7 +6,7 @@ export default async function ReposPage() {
   const repos = await getReposToImport()
 
   return (
-    <div className="p-4">
+    <div className="flex flex-col p-4">
       <h1 className="text-2xl font-bold mb-4">Repos</h1>
       {repos.length === 0 ? (
         <p>No repositories found.</p>

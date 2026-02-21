@@ -12,7 +12,7 @@ export const { handlers, auth, signIn, signOut } =
         clientSecret: process.env.GITHUB_SECRET!,
         authorization: {
           params: {
-            scope: "read:user repo",
+            scope: "read:user repo user:email",
           },
         },
       }),
