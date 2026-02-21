@@ -7,6 +7,10 @@ import { useState } from 'react';
 const Repo: React.FC<{ repo: GitHubRepo }> = ({ repo }) => {
   const [isAdded, setIsAdded] = useState(false);
 
+  if (isAdded) {
+    return null;
+  }
+
   const handleAddProject = async () => {
     if (isAdded) return;
     try {
