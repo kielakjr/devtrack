@@ -93,10 +93,7 @@ const Project: React.FC<ProjectProps> = ({ project, onDelete, index }) => {
         </p>
 
         {isLoading ? (
-          <div className="space-y-2 animate-pulse">
-            <div className="h-3 bg-gray-100 rounded w-3/4" />
-            <div className="h-2 bg-gray-100 rounded w-1/2" />
-          </div>
+          <p className="text-gray-500 text-sm">Loading details...</p>
         ) : repoDetails ? (
           <>
             <div className="flex items-center gap-4 text-xs text-gray-500 mb-3">
@@ -109,9 +106,6 @@ const Project: React.FC<ProjectProps> = ({ project, onDelete, index }) => {
                   {repoDetails.language}
                 </span>
               )}
-              <span>⭐ {repoDetails.stargazers_count}</span>
-              <span>🍴 {repoDetails.forks_count}</span>
-              <span>🐛 {repoDetails.open_issues_count}</span>
             </div>
 
             {repoDetails.languages && totalBytes > 0 && (

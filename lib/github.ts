@@ -99,13 +99,14 @@ export async function getRepoFull(
     ghFetch<any[]>(`/repos/${owner}/${repo}/tags`, token),
     ghFetch<any[]>(`/repos/${owner}/${repo}/contributors`, token),
     ghFetch<any[]>(`/repos/${owner}/${repo}/commits?per_page=30`, token),
-    ghFetch<any[]>(`/repos/${owner}/${repo}/stats/commit_activity`, token).catch(() => []),
+    ghFetch<any>(`/repos/${owner}/${repo}/stats/commit_activity`, token)
+    .then((data) => (Array.isArray(data) ? data : []))
+    .catch(() => []),
   ]);
 
   return {
     ...detailed,
 
-    // Te pola przyjdą z GET /repos/:owner/:repo (już w detailed)
     git_url: (detailed as any).git_url,
     ssh_url: (detailed as any).ssh_url,
     clone_url: (detailed as any).clone_url,
@@ -148,12 +149,14 @@ export async function getRepoFull(
       })
     ),
 
-    commit_activity: (activity as any[]).map(
+  commit_activity: Array.isArray(activity)
+    ? activity.map(
       (w): GitHubWeeklyActivity => ({
         week: w.week,
         total: w.total,
         days: w.days,
       })
-    ),
+    )
+    : [],
   };
 }
