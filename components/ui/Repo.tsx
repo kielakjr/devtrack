@@ -3,24 +3,42 @@
 import React, { useState } from 'react';
 import type { GitHubRepoBasic } from '@/lib/types/github';
 import { addProject } from '@/lib/projects';
+import { motion } from "motion/react";
 
-const Repo: React.FC<{ repo: GitHubRepoBasic }> = ({ repo }) => {
-  const [isAdded, setIsAdded] = useState(false);
+interface RepoProps {
+  repo: GitHubRepoBasic;
+  index: number;
+  onAdded: (repoId: number) => void;
+}
 
-  if (isAdded) return null;
+const Repo: React.FC<RepoProps> = ({ repo, index, onAdded }) => {
+  const [adding, setAdding] = useState(false);
 
   const handleAddProject = async () => {
-    if (isAdded) return;
+    if (adding) return;
+    setAdding(true);
     try {
       await addProject(repo);
-      setIsAdded(true);
+      onAdded(repo.id);
     } catch (error) {
       console.error("Error adding project:", error);
+      setAdding(false);
     }
   };
 
   return (
-    <li className="border rounded-lg p-4 w-64 h-28 relative group hover:border-blue-400 transition-colors">
+    <motion.li
+      layout
+      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9, y: -10, transition: { duration: 0.1 } }}
+      transition={{
+        duration: 0.3,
+        delay: index * 0.02,
+        layout: { type: "spring", stiffness: 300, damping: 30 },
+      }}
+      className="border rounded-lg p-4 w-64 h-28 relative group hover:border-blue-400 transition-colors"
+    >
       <div className="flex items-center gap-2 mb-1">
         <img
           src={repo.owner.avatar_url}
@@ -47,7 +65,10 @@ const Repo: React.FC<{ repo: GitHubRepoBasic }> = ({ repo }) => {
       {repo.topics.length > 0 && (
         <div className="flex gap-1 mt-1 overflow-hidden">
           {repo.topics.slice(0, 3).map((t) => (
-            <span key={t} className="text-[10px] px-1.5 py-0.5 bg-blue-50 text-blue-600 rounded-full">
+            <span
+              key={t}
+              className="text-[10px] px-1.5 py-0.5 bg-blue-50 text-blue-600 rounded-full"
+            >
               {t}
             </span>
           ))}
@@ -56,11 +77,12 @@ const Repo: React.FC<{ repo: GitHubRepoBasic }> = ({ repo }) => {
 
       <button
         onClick={handleAddProject}
-        className="size-8 bg-green-500 hover:bg-green-600 text-white rounded text-sm cursor-pointer absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+        disabled={adding}
+        className="size-8 bg-green-500 hover:bg-green-600 disabled:bg-green-300 text-white rounded text-sm cursor-pointer absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
       >
         +
       </button>
-    </li>
+    </motion.li>
   );
 };
 

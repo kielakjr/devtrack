@@ -1,18 +1,23 @@
 'use client';
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import { Project as ProjectType, deleteProject } from '@/lib/projects';
 import { getRepoDetailed } from '@/lib/github';
 import type { GitHubRepoDetailed } from '@/lib/types/github';
 import Link from 'next/link';
+import { motion } from "motion/react";
 
 interface ProjectProps {
   project: ProjectType;
   onDelete: () => void;
+  index: number;
 }
 
-const Project: React.FC<ProjectProps> = ({ project, onDelete }) => {
+const Project: React.FC<ProjectProps> = ({ project, onDelete, index }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [repoDetails, setRepoDetails] = useState<GitHubRepoDetailed | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const deletingRef = useRef(false);
 
   const repoPath = new URL(project.githubRepo).pathname.slice(1);
   const [owner, repoName] = repoPath.split("/");
@@ -34,11 +39,16 @@ const Project: React.FC<ProjectProps> = ({ project, onDelete }) => {
   }, [project.githubRepo]);
 
   const handleDelete = async () => {
+    if (deletingRef.current) return;
+    deletingRef.current = true;
+    setIsDeleting(true);
     try {
       await deleteProject(project.id);
       onDelete();
     } catch (error) {
       console.error("Error deleting project:", error);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -47,7 +57,18 @@ const Project: React.FC<ProjectProps> = ({ project, onDelete }) => {
     : 0;
 
   return (
-    <li className="border rounded-lg hover:border-blue-400 transition-colors relative group">
+    <motion.li
+      layout
+      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9, y: -10 }}
+      transition={{
+        duration: 0.3,
+        delay: index * 0.1,
+        layout: { type: "spring", stiffness: 300, damping: 30 },
+      }}
+      className="border rounded-lg hover:border-blue-400 transition-colors relative group"
+    >
       <Link href={`/projects/${repoPath}`} className="block p-4">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
@@ -133,20 +154,18 @@ const Project: React.FC<ProjectProps> = ({ project, onDelete }) => {
         ) : null}
       </Link>
 
-      {/* Delete */}
       <button
         onClick={handleDelete}
+        disabled={isDeleting}
         className="size-8 text-sm bg-red-500 hover:bg-red-600 text-white rounded absolute top-2 right-2 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
       >
         ✕
       </button>
-    </li>
+    </motion.li>
   );
 };
 
 export default Project;
-
-// ─── UTILS ────────────────────────────────────────────────
 
 function formatRelativeDate(dateStr: string): string {
   const now = Date.now();

@@ -1,20 +1,45 @@
-'use server';
-import { getReposToImport } from "@/lib/github"
-import Repo from "./Repo";
-import { GitHubRepoBasic } from "@/lib/types/github";
+'use client';
 
-export default async function Repos() {
-  const repos = await getReposToImport()
+import React, { useState } from 'react';
+import type { GitHubRepoBasic } from '@/lib/types/github';
+import { AnimatePresence, motion } from "motion/react";
+import Repo from './Repo';
+
+interface ReposProps {
+  initialRepos: GitHubRepoBasic[];
+}
+
+export default function Repos({ initialRepos }: ReposProps) {
+  const [repos, setRepos] = useState(initialRepos);
+
+  const handleAdded = (repoId: number) => {
+    setRepos((prev) => prev.filter((r) => r.id !== repoId));
+  };
+
+  if (repos.length === 0) {
+    return (
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="text-gray-500 text-sm"
+      >
+        No repositories found.
+      </motion.p>
+    );
+  }
 
   return (
-      repos.length === 0 ? (
-        <p>No repositories found.</p>
-      ) : (
-        <ul className="space-y-2 flex flex-wrap gap-2">
-          {repos.map((repo: GitHubRepoBasic) => (
-            <Repo key={repo.id} repo={repo} />
-          ))}
-        </ul>
-      )
-  )
+    <ul className="flex flex-wrap gap-2">
+      <AnimatePresence>
+        {repos.map((repo, index) => (
+          <Repo
+            key={repo.id}
+            repo={repo}
+            index={index}
+            onAdded={handleAdded}
+          />
+        ))}
+      </AnimatePresence>
+    </ul>
+  );
 }
