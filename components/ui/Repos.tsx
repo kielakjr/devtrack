@@ -1,6 +1,7 @@
 'use server';
-import { getReposToImport, GitHubRepo } from "@/lib/github"
+import { getReposToImport } from "@/lib/github"
 import Repo from "./Repo";
+import { GitHubRepoBasic } from "@/lib/types/github";
 
 export default async function Repos() {
   const repos = await getReposToImport()
@@ -10,7 +11,7 @@ export default async function Repos() {
         <p>No repositories found.</p>
       ) : (
         <ul className="space-y-2 flex flex-wrap gap-2">
-          {repos.map((repo: GitHubRepo) => (
+          {repos.map((repo: GitHubRepoBasic) => (
             <Repo key={repo.id} repo={repo} />
           ))}
         </ul>
