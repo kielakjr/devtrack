@@ -11,11 +11,11 @@ const Projects: React.FC<ProjectsProps> = ({ projects }) => {
   const [projectsList, setProjectsList] = React.useState<ProjectType[]>(projects);
 
   return (
-    projects.length === 0 ? (
+    projectsList.length === 0 ? (
         <p>No projects found.</p>
       ) : (
         <ul className="space-y-2">
-          {projectsList.map((project) => (
+          {projectsList.sort((a, b) => a.name.localeCompare(b.name)).map((project) => (
             <Project key={project.id} project={project} onDelete={() => setProjectsList(projectsList.filter(p => p.id !== project.id))} />
           ))}
         </ul>
