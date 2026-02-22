@@ -28,15 +28,13 @@ export async function isProjectOwner(
   projectName: string
 ): Promise<boolean> {
   const session = await auth();
-
   if (!session?.user?.id) return false;
 
   const project = await prisma.project.findFirst({
     where: {
       userId: session.user.id,
-      githubRepo: {
-        contains: `${owner}/${projectName}`,
-      },
+      githubOwner: owner,
+      githubName: projectName,
     },
   });
 

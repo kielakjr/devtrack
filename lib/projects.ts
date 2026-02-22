@@ -9,7 +9,19 @@ export interface Project {
   name: string;
   description: string | null;
   githubRepo: string;
+  githubOwner: string;
+  githubName: string;
+  status: string;
+  priority: string;
+  language: string | null;
+  stars: number;
+  forks: number;
+  openIssues: number;
+  lastCommitMsg: string | null;
+  lastCommitDate: Date | null;
+  lastSyncedAt: Date | null;
   createdAt: Date;
+  updatedAt: Date;
   userId: string;
 }
 
@@ -22,11 +34,16 @@ export const addProject = async (repo: GitHubRepoBasic) => {
   });
   if (!user) throw new Error("User not found");
 
+  const url = new URL(repo.html_url);
+  const [owner, name] = url.pathname.slice(1).split("/");
+
   return prisma.project.create({
     data: {
       name: repo.name,
       description: repo.description || "",
       githubRepo: repo.html_url,
+      githubOwner: owner,
+      githubName: name,
       userId: user.id,
     },
   });

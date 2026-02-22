@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client"
   output   = "../app/generated/prisma"
@@ -71,59 +65,159 @@ model VerificationToken {
 }
 
 model Project {
-  id        String   @id @default(cuid())
-  name      String
+  id          String  @id @default(cuid())
+  name        String
   description String?
-  githubRepo String
+  githubRepo  String
+  githubOwner String
+  githubName  String
 
-  userId    String
-  user      User @relation(fields: [userId], references: [id])
+  status   ProjectStatus @default(ACTIVE)
+  priority Priority      @default(MEDIUM)
 
-  tasks     Task[]
-  sessions  StudySession[]
+  language        String?
+  stars           Int       @default(0)
+  forks           Int       @default(0)
+  openIssues      Int       @default(0)
+  lastCommitMsg   String?
+  lastCommitDate  DateTime?
+  lastSyncedAt    DateTime?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  tasks    Task[]
+  sessions StudySession[]
+  goals    ProjectGoal[]
+  notes    ProjectNote[]
 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, githubRepo])
+  @@index([userId, status])
+}
+
+enum ProjectStatus {
+  ACTIVE
+  ON_HOLD
+  COMPLETED
+  ARCHIVED
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
 }
 
 model Task {
-  id        String @id @default(cuid())
+  id        String     @id @default(cuid())
   title     String
-  completed Boolean @default(false)
+  completed Boolean    @default(false)
+  priority  Priority   @default(MEDIUM)
+  dueDate   DateTime?
 
   projectId String
-  project   Project @relation(fields: [projectId], references: [id])
-}
-
-model Course {
-  id          String @id @default(cuid())
-  title       String
-  platform    String?
-  totalHours  Float?
-
-  userId      String
-  user        User @relation(fields: [userId], references: [id])
-
-  sessions    StudySession[]
-}
-
-model StudySession {
-  id        String   @id @default(cuid())
-
-  startedAt DateTime
-  endedAt   DateTime?
-
-  durationMinutes Int?
-
-  userId    String
-  user      User @relation(fields: [userId], references: [id])
-
-  projectId String?
-  project   Project? @relation(fields: [projectId], references: [id])
-
-  courseId  String?
-  course    Course? @relation(fields: [courseId], references: [id])
-
-  note      String?
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([projectId, completed])
+}
+
+model ProjectGoal {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  targetDate  DateTime?
+  completed   Boolean  @default(false)
+  completedAt DateTime?
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([projectId])
+}
+
+
+model ProjectNote {
+  id      String @id @default(cuid())
+  content String
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([projectId])
+}
+
+
+model Course {
+  id         String  @id @default(cuid())
+  title      String
+  platform   String?
+  url        String?
+  totalHours Float?
+
+  status   CourseStatus @default(IN_PROGRESS)
+  progress Float       @default(0)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  sessions StudySession[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, status])
+}
+
+enum CourseStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+  DROPPED
+}
+
+
+model StudySession {
+  id        String @id @default(cuid())
+
+  startedAt       DateTime
+  endedAt         DateTime?
+  durationMinutes Int?
+
+  type SessionType @default(CODING)
+  note String?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+
+  courseId String?
+  course   Course? @relation(fields: [courseId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, startedAt])
+  @@index([projectId])
+  @@index([courseId])
+}
+
+enum SessionType {
+  CODING
+  LEARNING
+  DEBUGGING
+  REVIEWING
+  PLANNING
 }
