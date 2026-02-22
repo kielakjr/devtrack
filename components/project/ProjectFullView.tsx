@@ -1,7 +1,7 @@
 'use client';
 
 import type { GitHubRepoFull } from '@/lib/types/github';
-import CommitGraph from './CommitGraph';
+import CommitGraph from '../ui/CommitGraph';
 import { getLanguageColor } from '@/util/githubColors';
 import { motion } from "motion/react";
 

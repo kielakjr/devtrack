@@ -1,5 +1,5 @@
 import { getRepoFull } from '@/lib/github';
-import RepoFullView from '@/components/ui/ProjectFullView';
+import RepoFullView from '@/components/project/ProjectFullView';
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 

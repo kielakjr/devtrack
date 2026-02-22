@@ -1,6 +1,6 @@
 import React, { Suspense } from "react"
 import { getProjects } from "@/lib/projects";
-import Projects from "@/components/ui/Projects";
+import Projects from "@/components/project/Projects";
 
 export default async function ProjectsPage() {
   const projects = await getProjects();

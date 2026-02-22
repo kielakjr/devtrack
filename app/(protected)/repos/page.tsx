@@ -1,5 +1,5 @@
 'use server';
-import ReposServer from "@/components/ui/ReposServer";
+import ReposServer from "@/components/repo/ReposServer";
 import { Suspense } from "react";
 
 export default async function ReposPage() {
