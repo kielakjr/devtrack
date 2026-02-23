@@ -10,6 +10,7 @@ const Sidebar: React.FC = () => {
         <NavLink href="/projects">Projects</NavLink>
         <NavLink href="/repos">Repos</NavLink>
         <NavLink href="/sessions">Sessions</NavLink>
+        <NavLink href="/courses">Courses</NavLink>
       </nav>
     </aside>
   )
