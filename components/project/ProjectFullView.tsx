@@ -38,7 +38,7 @@ export default function ProjectFullView({ repo }: Props) {
         />
         <div>
           <h1 className="text-2xl font-bold">{repo.full_name}</h1>
-          <p className="text-gray-500">{repo.description || "No description provided"}</p>
+          <p className="text-text">{repo.description || "No description provided"}</p>
         </div>
         <a
           href={repo.html_url}
@@ -53,7 +53,7 @@ export default function ProjectFullView({ repo }: Props) {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <Stat label="Stars" value={repo.stargazers_count} icon="⭐" />
         <Stat label="Forks" value={repo.forks_count} icon="🍴" />
-        <Stat label="Issues" value={repo.open_issues_count} icon="🐛" />
+        <Stat label="Issues" value={repo.open_issues_count} icon="❗" />
         <Stat label="Watchers" value={repo.watchers_count} icon="👁" />
       </div>
 
@@ -86,7 +86,7 @@ export default function ProjectFullView({ repo }: Props) {
           </div>
           <div className="flex flex-wrap gap-3 mt-2">
             {Object.entries(repo.languages).map(([lang, bytes]) => (
-              <span key={lang} className="text-xs text-gray-600 flex items-center gap-1">
+              <span key={lang} className="text-xs text-text flex items-center gap-1">
                 <span
                   className="size-2 rounded-full inline-block"
                   style={{ backgroundColor: getLanguageColor(lang) }}
@@ -121,7 +121,7 @@ export default function ProjectFullView({ repo }: Props) {
             { label: "Git", url: repo.git_url },
           ].map(({ label, url }) => (
             <div key={label} className="flex items-center gap-2 text-sm">
-              <span className="text-xs font-semibold text-gray-500 w-12">{label}</span>
+              <span className="text-xs font-semibold text-text w-12">{label}</span>
               <code className="bg-primary text-background px-2 py-1 rounded text-xs flex-1 truncate cursor-pointer hover:bg-primary/80 transition-colors" onClick={() => copyToClipboard(url)}>{url}</code>
             </div>
           ))}
@@ -142,7 +142,7 @@ export default function ProjectFullView({ repo }: Props) {
                 <img src={c.avatar_url} alt={c.login} className="size-8 rounded-full" />
                 <div>
                   <p className="text-sm font-medium">{c.login}</p>
-                  <p className="text-xs text-gray-500">{c.contributions} commits</p>
+                  <p className="text-xs text-text">{c.contributions} commits</p>
                 </div>
               </a>
             ))}
@@ -198,11 +198,11 @@ export default function ProjectFullView({ repo }: Props) {
                   >
                     {c.message.split("\n")[0]}
                   </a>
-                  <div className="flex items-center gap-2 text-xs text-gray-500">
+                  <div className="flex items-center gap-2 text-xs text-text">
                     <span>{c.author_login}</span>
                     <span>·</span>
                     <span>{new Date(c.date).toLocaleDateString("pl-PL")}</span>
-                    <span className="font-mono text-gray-400">{c.sha.slice(0, 7)}</span>
+                    <span className="font-mono text-text">{c.sha.slice(0, 7)}</span>
                     {c.stats && (
                       <span>
                         <span className="text-green-600">+{c.stats.additions}</span>{" "}
@@ -226,7 +226,7 @@ export default function ProjectFullView({ repo }: Props) {
         </Section>
       )}
 
-      <div className="grid grid-cols-3 gap-4 text-xs text-gray-500 border-t pt-4">
+      <div className="grid grid-cols-3 gap-4 text-xs text-text border-t pt-4">
         <div>
           <span className="block font-semibold text-gray-700">Created</span>
           {new Date(repo.created_at).toLocaleDateString("pl-PL")}
@@ -247,7 +247,7 @@ export default function ProjectFullView({ repo }: Props) {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <h3 className="text-sm font-semibold text-gray-700 mb-2">{title}</h3>
+      <h3 className="text-sm font-semibold text-text mb-2">{title}</h3>
       {children}
     </div>
   );

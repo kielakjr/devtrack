@@ -13,7 +13,7 @@ const Projects: React.FC<ProjectsProps> = ({ projects }) => {
 
   return (
     projectsList.length === 0 ? (
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-gray-500">No projects found.</motion.p>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-text">No projects found.</motion.p>
       ) : (
         <ul className="space-y-2">
           <AnimatePresence>

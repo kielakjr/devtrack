@@ -86,20 +86,20 @@ const Project: React.FC<ProjectProps> = ({ project, onDelete, index }) => {
               {project.name}
             </span>
           </div>
-          <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">
+          <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-text">
             {repoDetails?.private ? "🔒 Private" : "🌐 Public"}
           </span>
         </div>
 
-        <p className="text-sm text-gray-500 line-clamp-1 mb-3">
+        <p className="text-sm text-text line-clamp-1 mb-3">
           {project.description || "No description provided."}
         </p>
 
         {isLoading ? (
-          <p className="text-gray-500 text-sm">Loading details...</p>
+          <p className="text-text text-sm">Loading details...</p>
         ) : repoDetails ? (
           <>
-            <div className="flex items-center gap-4 text-xs text-gray-500 mb-3">
+            <div className="flex items-center gap-4 text-xs text-text mb-3">
               {repoDetails.language && (
                 <span className="flex items-center gap-1">
                   <span
@@ -130,7 +130,7 @@ const Project: React.FC<ProjectProps> = ({ project, onDelete, index }) => {
             )}
 
             {repoDetails.last_commit && (
-              <div className="flex items-center gap-2 text-xs text-gray-500">
+              <div className="flex items-center gap-2 text-xs text-text">
                 {repoDetails.last_commit.author_avatar && (
                   <img
                     src={repoDetails.last_commit.author_avatar}

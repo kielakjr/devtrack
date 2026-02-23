@@ -21,7 +21,7 @@ export default async function RepoPage({ params }: PageProps) {
 
   return (
     <div className="max-w-5xl mx-auto p-6">
-      <Suspense fallback={<p className="text-gray-500 text-center">Loading repository details...</p>}>
+      <Suspense fallback={<p className="text-text text-center">Loading repository details...</p>}>
         <RepoData owner={owner} project={project} />
       </Suspense>
     </div>

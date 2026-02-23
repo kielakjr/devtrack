@@ -9,7 +9,7 @@ const Sidebar: React.FC = () => {
         <NavLink href="/dashboard">Dashboard</NavLink>
         <NavLink href="/projects">Projects</NavLink>
         <NavLink href="/repos">Repos</NavLink>
-        <NavLink href="/settings">Settings</NavLink>
+        <NavLink href="/sessions">Sessions</NavLink>
       </nav>
     </aside>
   )

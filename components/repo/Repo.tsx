@@ -53,12 +53,12 @@ const Repo: React.FC<RepoProps> = ({ repo, index, onAdded }) => {
         >
           {repo.name}
         </a>
-        <span className="ml-auto text-[10px] text-gray-400">
+        <span className="ml-auto text-[10px] text-text">
           {repo.private ? "🔒" : "🌐"}
         </span>
       </div>
 
-      <p className="text-xs text-gray-500 line-clamp-2">
+      <p className="text-xs text-text line-clamp-2">
         {repo.description || "No description provided."}
       </p>
 

@@ -21,7 +21,7 @@ export default function Repos({ initialRepos }: ReposProps) {
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="text-gray-500 text-sm"
+        className="text-text text-sm"
       >
         No repositories found.
       </motion.p>
