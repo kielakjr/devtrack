@@ -40,3 +40,17 @@ export async function isProjectOwner(
 
   return !!project;
 }
+
+export async function getAccountCreatedAt() {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error("Not authenticated");
+
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { createdAt: true },
+  });
+
+  if (!user) throw new Error("User not found");
+
+  return user.createdAt;
+}

@@ -15,7 +15,6 @@ model User {
   emailVerified DateTime?
   image         String?
   accounts      Account[]
-  sessions      StudySession[]
 
   projects      Project[]
   courses       Course[]

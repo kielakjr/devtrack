@@ -74,8 +74,9 @@ export async function stopSession(sessionId: string, note?: string) {
   if (studySession.endedAt) throw new Error("Session already ended");
 
   const endedAt = new Date();
-  const durationMinutes = Math.round(
-    (endedAt.getTime() - studySession.startedAt.getTime()) / 60_000
+  const durationMinutes = Math.max(
+    1,
+    Math.round((endedAt.getTime() - studySession.startedAt.getTime()) / 60_000)
   );
 
   return prisma.studySession.update({
@@ -212,4 +213,18 @@ export async function getSessionContextOptions() {
   ]);
 
   return { projects, courses };
+}
+
+export async function getAllSessions() {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error("Not authenticated");
+
+  return prisma.studySession.findMany({
+    where: { userId: session.user.id },
+    select: {
+      startedAt: true,
+      durationMinutes: true,
+    },
+    orderBy: { startedAt: "desc" },
+  });
 }

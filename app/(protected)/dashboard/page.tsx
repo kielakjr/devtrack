@@ -1,20 +1,17 @@
-import { getActiveSession, getRecentSessions, getGlobalStats, getSessionContextOptions } from '@/lib/sessions';
-import SessionTimer from '@/components/session/SessionTimer';
-import SessionList from '@/components/session/SessionList';
+import { getAllSessions } from '@/lib/sessions';
+import { getAccountCreatedAt } from '@/lib/auth';
+import SessionGraph from '@/components/session/SessionGraph';
 
 export default async function DashboardPage() {
-  const [options, sessions, stats] = await Promise.all([
-    getSessionContextOptions(),
-    getRecentSessions(),
-    getGlobalStats(),
+  const [allSessions, accountCreatedAt] = await Promise.all([
+    getAllSessions(),
+    getAccountCreatedAt(),
   ]);
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
+    <div className="max-w-4xl mx-auto p-6 space-y-6 overflow-visible">
       <h1 className="text-2xl font-bold">Dashboard</h1>
-
-      <SessionTimer options={options} />
-      <SessionList sessions={sessions} stats={stats} />
+      <SessionGraph sessions={allSessions} accountCreatedAt={accountCreatedAt} />
     </div>
   );
 }

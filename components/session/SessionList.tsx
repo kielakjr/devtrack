@@ -101,7 +101,7 @@ export default function SessionList({ sessions, stats }: Props) {
                 </span>
 
                 <span className="font-mono text-xs text-primary w-14">
-                  {s.durationMinutes ? formatDuration(s.durationMinutes) : 'active'}
+                  {s.endedAt ? formatDuration(s.durationMinutes ?? 1) : 'active'}
                 </span>
 
                 {s.project ? (
