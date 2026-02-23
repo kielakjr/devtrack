@@ -1,5 +1,6 @@
 'use client';
-import React, {useState, useEffect, useRef} from 'react'
+
+import React, { useState, useEffect, useRef } from 'react';
 import { Project as ProjectType, deleteProject } from '@/lib/projects';
 import { getRepoDetailed } from '@/lib/github';
 import type { GitHubRepoDetailed } from '@/lib/types/github';
@@ -17,10 +18,7 @@ const Project: React.FC<ProjectProps> = ({ project, onDelete, index }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [repoDetails, setRepoDetails] = useState<GitHubRepoDetailed | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
-
   const deletingRef = useRef(false);
-
-  console.log("Project component rendered for:", project);
 
   const repoPath = new URL(project.githubRepo).pathname.slice(1);
   const [owner, repoName] = repoPath.split("/");
@@ -70,7 +68,7 @@ const Project: React.FC<ProjectProps> = ({ project, onDelete, index }) => {
         delay: index * 0.1,
         layout: { type: "spring", stiffness: 300, damping: 30 },
       }}
-      className="border rounded-lg hover:border-blue-400 transition-colors relative group"
+      className="border border-border rounded-lg hover:border-primary/30 transition-colors relative group"
     >
       <Link href={`/projects/${repoPath}`} className="block p-4">
         <div className="flex items-center justify-between mb-2">
@@ -82,12 +80,12 @@ const Project: React.FC<ProjectProps> = ({ project, onDelete, index }) => {
                 className="size-6 rounded-full"
               />
             )}
-            <span className="font-semibold group-hover:text-blue-500 transition-colors">
+            <span className="font-semibold text-primary group-hover:text-primary/80 transition-colors">
               {project.name}
             </span>
           </div>
-          <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-text">
-            {repoDetails?.private ? "🔒 Private" : "🌐 Public"}
+          <span className="text-xs px-2 py-0.5 rounded-full border border-border text-text/50">
+            {repoDetails?.private ? "Private" : "Public"}
           </span>
         </div>
 
@@ -96,7 +94,10 @@ const Project: React.FC<ProjectProps> = ({ project, onDelete, index }) => {
         </p>
 
         {isLoading ? (
-          <p className="text-text text-sm">Loading details...</p>
+          <div className="flex items-center gap-2">
+            <div className="size-2.5 rounded-full bg-secondary/50 animate-pulse" />
+            <span className="text-xs text-text/30">Loading...</span>
+          </div>
         ) : repoDetails ? (
           <>
             <div className="flex items-center gap-4 text-xs text-text mb-3">
@@ -130,7 +131,7 @@ const Project: React.FC<ProjectProps> = ({ project, onDelete, index }) => {
             )}
 
             {repoDetails.last_commit && (
-              <div className="flex items-center gap-2 text-xs text-text">
+              <div className="flex items-center gap-2 text-xs text-text/50">
                 {repoDetails.last_commit.author_avatar && (
                   <img
                     src={repoDetails.last_commit.author_avatar}
@@ -154,7 +155,7 @@ const Project: React.FC<ProjectProps> = ({ project, onDelete, index }) => {
       <button
         onClick={handleDelete}
         disabled={isDeleting}
-        className="size-8 text-sm bg-red-500 hover:bg-red-600 text-white rounded absolute top-2 right-2 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
+        className="size-8 text-sm bg-red-500/80 hover:bg-red-500 text-white rounded absolute top-2 right-2 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
       >
         ✕
       </button>

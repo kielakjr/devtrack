@@ -37,7 +37,7 @@ const Repo: React.FC<RepoProps> = ({ repo, index, onAdded }) => {
         delay: index * 0.02,
         layout: { type: "spring", stiffness: 300, damping: 30 },
       }}
-      className="border rounded-lg p-4 w-64 h-28 relative group hover:border-blue-400 transition-colors"
+      className="border border-border rounded-lg p-4 w-64 h-28 relative group hover:border-primary/30 transition-colors"
     >
       <div className="flex items-center gap-2 mb-1">
         <img
@@ -49,11 +49,11 @@ const Repo: React.FC<RepoProps> = ({ repo, index, onAdded }) => {
           href={repo.html_url}
           target="_blank"
           rel="noopener noreferrer"
-          className="font-semibold text-sm hover:underline cursor-pointer truncate"
+          className="font-semibold text-sm text-primary hover:underline cursor-pointer truncate"
         >
           {repo.name}
         </a>
-        <span className="ml-auto text-[10px] text-text">
+        <span className="ml-auto text-[10px] text-text/50">
           {repo.private ? "🔒" : "🌐"}
         </span>
       </div>
@@ -67,7 +67,7 @@ const Repo: React.FC<RepoProps> = ({ repo, index, onAdded }) => {
           {repo.topics.slice(0, 3).map((t) => (
             <span
               key={t}
-              className="text-[10px] px-1.5 py-0.5 bg-blue-50 text-blue-600 rounded-full"
+              className="text-[10px] px-1.5 py-0.5 border border-primary/20 text-primary/70 rounded-full"
             >
               {t}
             </span>
@@ -78,7 +78,7 @@ const Repo: React.FC<RepoProps> = ({ repo, index, onAdded }) => {
       <button
         onClick={handleAddProject}
         disabled={adding}
-        className="size-8 bg-green-500 hover:bg-green-600 disabled:bg-green-300 text-white rounded text-sm cursor-pointer absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+        className="size-8 bg-primary hover:bg-primary/80 disabled:bg-primary/30 text-background rounded text-sm cursor-pointer absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
       >
         +
       </button>

@@ -47,11 +47,11 @@ function formatDuration(minutes: number): string {
   return `${h}h ${m}m`;
 }
 
-function getLevel(minutes: number, max: number): number {
+function getLevel(minutes: number): number {
   if (minutes === 0) return 0;
-  if (minutes <= max * 0.25) return 1;
-  if (minutes <= max * 0.5) return 2;
-  if (minutes <= max * 0.75) return 3;
+  if (minutes < 30) return 1;
+  if (minutes < 60) return 2;
+  if (minutes < 120) return 3;
   return 4;
 }
 
@@ -143,6 +143,7 @@ export default function SessionGraph({ sessions, accountCreatedAt }: Props) {
   );
 
   const accountStart = new Date(accountCreatedAt);
+  accountStart.setHours(0, 0, 0, 0);
 
   return (
     <div className="space-y-3">
@@ -192,7 +193,7 @@ export default function SessionGraph({ sessions, accountCreatedAt }: Props) {
                     const isFuture = day.date > new Date();
                     const isBeforeAccount = day.date < accountStart;
                     const isInteractive = !isFuture && !isBeforeAccount;
-                    const level = getLevel(day.minutes, data.maxMinutes);
+                    const level = getLevel(day.minutes);
 
                     return (
                       <div

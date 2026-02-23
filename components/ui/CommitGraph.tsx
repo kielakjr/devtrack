@@ -21,7 +21,7 @@ export default function CommitGraph({ activity }: Props) {
               key={week.week}
               className="flex-1 bg-green-400 hover:bg-green-500 rounded-t transition-colors cursor-default"
               style={{ height: `${Math.max(height, 2)}%` }}
-              title={`Week ${date.toLocaleDateString("pl-PL")}: ${week.total} commits`}
+              title={`Week ${date.toLocaleDateString("en-US")}: ${week.total} commits`}
             />
           );
         })}
@@ -29,13 +29,13 @@ export default function CommitGraph({ activity }: Props) {
 
       <div className="flex justify-between text-xs text-gray-400">
         <span>
-          {new Date(recent[0]?.week * 1000).toLocaleDateString("pl-PL", {
+          {new Date(recent[0]?.week * 1000).toLocaleDateString("en-US", {
             month: "short",
             year: "numeric",
           })}
         </span>
         <span>
-          {new Date(recent[recent.length - 1]?.week * 1000).toLocaleDateString("pl-PL", {
+          {new Date(recent[recent.length - 1]?.week * 1000).toLocaleDateString("en-US", {
             month: "short",
             year: "numeric",
           })}
