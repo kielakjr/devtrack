@@ -29,6 +29,13 @@ const SESSION_TYPES = [
 
 type SessionType = typeof SESSION_TYPES[number]['value'];
 
+const formatTime = (seconds: number) => {
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = seconds % 60;
+  return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+};
+
 export default function SessionTimer({ options }: Props) {
   const [active, setActive] = useState<StudySession | null>(null);
   const [elapsed, setElapsed] = useState(0);
@@ -100,13 +107,6 @@ export default function SessionTimer({ options }: Props) {
     setActive(updated);
   };
 
-  const formatTime = (seconds: number) => {
-    const h = Math.floor(seconds / 3600);
-    const m = Math.floor((seconds % 3600) / 60);
-    const s = seconds % 60;
-    return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-  };
-
   const getActiveContextValue = () => {
     if (active?.projectId) return `project:${active.projectId}`;
     if (active?.courseId) return `course:${active.courseId}`;
@@ -147,7 +147,7 @@ export default function SessionTimer({ options }: Props) {
           <select
             value={getActiveContextValue()}
             onChange={(e) => handleActiveContextChange(e.target.value)}
-            className="px-2 py-1 border border-border rounded text-sm flex-1 bg-background text-text"
+            className="px-2 py-1 border border-border rounded text-sm flex-1 bg-background text-text outline-none"
           >
             <option value="none">No context</option>
             {options.projects.length > 0 && (
@@ -211,7 +211,7 @@ export default function SessionTimer({ options }: Props) {
           <select
             value={type}
             onChange={(e) => setType(e.target.value as SessionType)}
-            className="w-full px-3 py-1.5 border border-border rounded text-sm bg-background text-text"
+            className="w-full px-3 py-1.5 border border-border rounded text-sm bg-background text-text outline-none"
           >
             {SESSION_TYPES.map((t) => (
               <option key={t.value} value={t.value}>{t.label}</option>
@@ -224,7 +224,7 @@ export default function SessionTimer({ options }: Props) {
           <select
             value={getStartContextValue()}
             onChange={(e) => handleContextSelect(e.target.value)}
-            className="w-full px-3 py-1.5 border border-border rounded text-sm bg-background text-text"
+            className="w-full px-3 py-1.5 border border-border rounded text-sm bg-background text-text outline-none"
           >
             <option value="none">No context</option>
             {options.projects.length > 0 && (
