@@ -64,14 +64,6 @@ model Project {
   status   ProjectStatus @default(ACTIVE)
   priority Priority      @default(MEDIUM)
 
-  language        String?
-  stars           Int       @default(0)
-  forks           Int       @default(0)
-  openIssues      Int       @default(0)
-  lastCommitMsg   String?
-  lastCommitDate  DateTime?
-  lastSyncedAt    DateTime?
-
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 

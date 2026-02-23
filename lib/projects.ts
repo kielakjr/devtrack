@@ -13,13 +13,6 @@ export interface Project {
   githubName: string;
   status: string;
   priority: string;
-  language: string | null;
-  stars: number;
-  forks: number;
-  openIssues: number;
-  lastCommitMsg: string | null;
-  lastCommitDate: Date | null;
-  lastSyncedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
   userId: string;
