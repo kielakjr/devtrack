@@ -1,6 +1,6 @@
 'use client';
 import { login } from "@/lib/auth";
-import GitHubLogo from "@/components/ui/GitHubLogo";
+import GitHubLogo from "@/components/github/GitHubLogo";
 
 export default function SignInPage() {
   return (

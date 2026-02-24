@@ -1,7 +1,7 @@
 'use client';
 
 import type { GitHubRepoFull } from '@/lib/types/github';
-import CommitActivitySection from '../ui/CommitActivitySection';
+import CommitActivitySection from '../github/CommitActivitySection';
 import { getLanguageColor } from '@/util/githubColors';
 import { motion } from "motion/react";
 import Section from '../ui/Section';
