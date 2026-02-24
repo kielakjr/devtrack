@@ -7,6 +7,7 @@ import type { GitHubRepoDetailed } from '@/lib/types/github';
 import Link from 'next/link';
 import { motion } from "motion/react";
 import { getLanguageColor } from '@/util/githubColors';
+import { relative } from '@/util/dateFormatting';
 
 interface ProjectProps {
   project: ProjectType;
@@ -144,7 +145,7 @@ const Project: React.FC<ProjectProps> = ({ project, onDelete, index }) => {
                 </span>
                 <span>·</span>
                 <span className="whitespace-nowrap">
-                  {formatRelativeDate(repoDetails.last_commit.date)}
+                  {relative(repoDetails.last_commit.date)}
                 </span>
               </div>
             )}
@@ -164,21 +165,3 @@ const Project: React.FC<ProjectProps> = ({ project, onDelete, index }) => {
 };
 
 export default Project;
-
-function formatRelativeDate(dateStr: string): string {
-  const now = Date.now();
-  const then = new Date(dateStr).getTime();
-  const diff = now - then;
-
-  const minutes = Math.floor(diff / 60_000);
-  if (minutes < 60) return `${minutes}min ago`;
-
-  const hours = Math.floor(diff / 3_600_000);
-  if (hours < 24) return `${hours}h ago`;
-
-  const days = Math.floor(diff / 86_400_000);
-  if (days < 30) return `${days}d ago`;
-
-  const months = Math.floor(days / 30);
-  return `${months}mo ago`;
-}

@@ -11,6 +11,7 @@ import {
 } from '@/lib/courses';
 import CourseCard from './CourseCard';
 import CourseForm from './CourseForm';
+import Stat from '../ui/Stat';
 
 interface Props {
   initialCourses: Course[];
@@ -71,10 +72,10 @@ export default function Courses({ initialCourses }: Props) {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <StatCard label="Total" value={stats.total.toString()} />
-        <StatCard label="In progress" value={stats.inProgress.toString()} />
-        <StatCard label="Completed" value={stats.completed.toString()} />
-        <StatCard label="Time spent" value={`${stats.totalHours}h`} />
+        <Stat label="Total" value={stats.total.toString()} />
+        <Stat label="In progress" value={stats.inProgress.toString()} />
+        <Stat label="Completed" value={stats.completed.toString()} />
+        <Stat label="Time spent" value={`${stats.totalHours}h`} />
       </div>
 
       <div className="flex items-center justify-between">
@@ -126,15 +127,6 @@ export default function Courses({ initialCourses }: Props) {
           {tab === 'ALL' ? 'No courses yet' : `No ${tab.toLowerCase().replace('_', ' ')} courses`}
         </p>
       )}
-    </div>
-  );
-}
-
-function StatCard({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="border border-border rounded-lg p-4 text-center">
-      <p className="text-2xl font-bold text-primary">{value}</p>
-      <p className="text-xs text-text mt-1">{label}</p>
     </div>
   );
 }

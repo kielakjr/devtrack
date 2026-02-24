@@ -4,6 +4,8 @@ import Link from 'next/link';
 import type { DashboardData } from '@/lib/dashboard';
 import SessionGraph from '@/components/session/SessionGraph';
 import SessionTimer from '@/components/session/SessionTimer';
+import Stat from '../ui/Stat';
+import { fmt, relative } from '@/util/dateFormatting';
 
 interface Props {
   data: DashboardData;
@@ -12,25 +14,6 @@ interface Props {
     courses: { id: string; title: string }[];
   };
   activeSession: any;
-}
-
-function fmt(minutes: number): string {
-  const h = Math.floor(minutes / 60);
-  const m = minutes % 60;
-  if (h === 0) return `${m}m`;
-  if (m === 0) return `${h}h`;
-  return `${h}h ${m}m`;
-}
-
-function relative(date: Date | string): string {
-  const diff = Date.now() - new Date(date).getTime();
-  const m = Math.floor(diff / 60_000);
-  if (m < 60) return `${m}m ago`;
-  const h = Math.floor(diff / 3_600_000);
-  if (h < 24) return `${h}h ago`;
-  const d = Math.floor(diff / 86_400_000);
-  if (d < 30) return `${d}d ago`;
-  return `${Math.floor(d / 30)}mo ago`;
 }
 
 function greeting(): string {
@@ -181,8 +164,6 @@ export default function Dashboard({ data, sessionOptions, activeSession }: Props
   );
 }
 
-// ─── Sub-components ───────────────────────────────────────
-
 function Card({
   title,
   action,
@@ -203,15 +184,6 @@ function Card({
         )}
       </div>
       {children}
-    </div>
-  );
-}
-
-function Stat({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="border border-border rounded-lg p-4 text-center">
-      <p className="text-2xl font-bold text-primary">{value}</p>
-      <p className="text-xs text-text mt-1">{label}</p>
     </div>
   );
 }

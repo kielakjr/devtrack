@@ -5,6 +5,7 @@ import { motion } from 'motion/react';
 import { Course } from '@/lib/courses';
 import type { CreateCourseInput, UpdateCourseInput } from '@/lib/courses';
 import CourseForm from './CourseForm';
+import { fmt } from '@/util/dateFormatting';
 
 interface Props {
   course: Course;
@@ -33,7 +34,7 @@ export default function CourseCard({
   const [progress, setProgress] = useState(course.progress);
   const [confirming, setConfirming] = useState(false);
 
-  const timeSpent = formatDuration(course.totalMinutes);
+  const timeSpent = fmt(course.totalMinutes);
   const progressPercent = Math.round(course.progress);
 
   const handleProgressCommit = async () => {
@@ -133,7 +134,7 @@ export default function CourseCard({
             <span className="text-[11px] text-text/50">{progressPercent}%</span>
             {course.totalHours && course.totalMinutes > 0 && (
               <span className="text-[11px] text-text/50">
-                {formatDuration(course.totalMinutes)} / {course.totalHours}h
+                {fmt(course.totalMinutes)} / {course.totalHours}h
               </span>
             )}
           </div>
@@ -165,12 +166,4 @@ export default function CourseCard({
       </div>
     </motion.li>
   );
-}
-
-function formatDuration(minutes: number): string {
-  const h = Math.floor(minutes / 60);
-  const m = minutes % 60;
-  if (h === 0) return `${m}m`;
-  if (m === 0) return `${h}h`;
-  return `${h}h ${m}m`;
 }

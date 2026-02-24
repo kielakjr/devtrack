@@ -5,28 +5,12 @@ import { useState } from 'react';
 import type { ProfileData } from '@/lib/profile';
 import SessionGraph from '@/components/session/SessionGraph';
 import Link from 'next/link';
+import Section from '../ui/Section';
+import Stat from '../ui/Stat';
+import { fmt, relative } from '@/util/dateFormatting';
 
 interface Props {
   data: ProfileData;
-}
-
-function fmt(minutes: number): string {
-  const h = Math.floor(minutes / 60);
-  const m = minutes % 60;
-  if (h === 0) return `${m}m`;
-  if (m === 0) return `${h}h`;
-  return `${h}h ${m}m`;
-}
-
-function relative(date: Date | string): string {
-  const diff = Date.now() - new Date(date).getTime();
-  const m = Math.floor(diff / 60_000);
-  if (m < 60) return `${m}m ago`;
-  const h = Math.floor(diff / 3_600_000);
-  if (h < 24) return `${h}h ago`;
-  const d = Math.floor(diff / 86_400_000);
-  if (d < 30) return `${d}d ago`;
-  return `${Math.floor(d / 30)}mo ago`;
 }
 
 export default function ProfileView({ data }: Props) {
@@ -133,24 +117,6 @@ export default function ProfileView({ data }: Props) {
           )}
         </div>
       </div>
-    </div>
-  );
-}
-
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div className="border border-border rounded-lg p-4">
-      <h2 className="text-xs uppercase tracking-wider text-text mb-4">{title}</h2>
-      {children}
-    </div>
-  );
-}
-
-function Stat({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="border border-border rounded-lg p-4 text-center">
-      <p className="text-xl font-bold text-primary">{value}</p>
-      <p className="text-xs text-text mt-1">{label}</p>
     </div>
   );
 }

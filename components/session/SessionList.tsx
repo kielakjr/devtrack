@@ -2,6 +2,8 @@
 
 import { StudySession } from '@/lib/sessions';
 import Link from 'next/link';
+import Stat from '@/components/ui/Stat';
+import { fmt, formatDateTime } from '@/util/dateFormatting';
 
 interface Stats {
   totalMinutes: number;
@@ -18,14 +20,6 @@ interface Props {
   stats: Stats;
 }
 
-function formatDuration(minutes: number): string {
-  const h = Math.floor(minutes / 60);
-  const m = minutes % 60;
-  if (h === 0) return `${m}m`;
-  if (m === 0) return `${h}h`;
-  return `${h}h ${m}m`;
-}
-
 export default function SessionList({ sessions, stats }: Props) {
   const maxTypeMinutes = Math.max(...Object.values(stats.byType), 1);
   const maxProjectMinutes = Math.max(...Object.values(stats.byProject), 1);
@@ -33,10 +27,10 @@ export default function SessionList({ sessions, stats }: Props) {
   return (
     <div className="space-y-8">
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <StatCard label="Today" value={formatDuration(stats.todayMinutes)} />
-        <StatCard label="This week" value={formatDuration(stats.thisWeekMinutes)} />
-        <StatCard label="Total" value={formatDuration(stats.totalMinutes)} />
-        <StatCard label="Sessions" value={stats.sessionCount.toString()} />
+        <Stat label="Today" value={fmt(stats.todayMinutes)} />
+        <Stat label="This week" value={fmt(stats.thisWeekMinutes)} />
+        <Stat label="Total" value={fmt(stats.totalMinutes)} />
+        <Stat label="Sessions" value={stats.sessionCount.toString()} />
       </div>
 
       {Object.keys(stats.byType).length > 0 && (
@@ -55,7 +49,7 @@ export default function SessionList({ sessions, stats }: Props) {
                     />
                   </div>
                   <span className="text-xs text-text w-16 text-right">
-                    {formatDuration(minutes)}
+                    {fmt(minutes)}
                   </span>
                 </div>
               ))}
@@ -79,7 +73,7 @@ export default function SessionList({ sessions, stats }: Props) {
                     />
                   </div>
                   <span className="text-xs text-text w-16 text-right">
-                    {formatDuration(minutes)}
+                    {fmt(minutes)}
                   </span>
                 </div>
               ))}
@@ -101,7 +95,7 @@ export default function SessionList({ sessions, stats }: Props) {
                 </span>
 
                 <span className="font-mono text-xs text-primary w-14">
-                  {s.endedAt ? formatDuration(s.durationMinutes ?? 1) : 'active'}
+                  {s.endedAt ? fmt(s.durationMinutes ?? 1) : 'active'}
                 </span>
 
                 {s.project ? (
@@ -137,43 +131,4 @@ export default function SessionList({ sessions, stats }: Props) {
       )}
     </div>
   );
-}
-
-function StatCard({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="border border-border rounded-lg p-4 text-center">
-      <p className="text-2xl font-bold text-primary">{value}</p>
-      <p className="text-xs text-text mt-1">{label}</p>
-    </div>
-  );
-}
-
-function formatDateTime(date: Date | string): string {
-  const d = new Date(date);
-  const now = new Date();
-  const isToday =
-    d.getDate() === now.getDate() &&
-    d.getMonth() === now.getMonth() &&
-    d.getFullYear() === now.getFullYear();
-
-  const yesterday = new Date(now);
-  yesterday.setDate(yesterday.getDate() - 1);
-  const isYesterday =
-    d.getDate() === yesterday.getDate() &&
-    d.getMonth() === yesterday.getMonth() &&
-    d.getFullYear() === yesterday.getFullYear();
-
-  const time = d.toLocaleTimeString('en-US', {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false,
-  });
-
-  if (isToday) return time;
-  if (isYesterday) return `yesterday ${time}`;
-
-  return d.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-  }) + ` ${time}`;
 }

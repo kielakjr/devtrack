@@ -101,7 +101,6 @@ export async function updateCourse(courseId: string, input: UpdateCourseInput): 
     input.progress = Math.min(100, Math.max(0, input.progress));
   }
 
-  // Auto-complete when progress hits 100
   if (input.progress === 100 && course.status !== 'COMPLETED') {
     input.status = 'COMPLETED';
   }

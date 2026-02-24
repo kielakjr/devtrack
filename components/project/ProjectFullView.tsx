@@ -4,6 +4,7 @@ import type { GitHubRepoFull } from '@/lib/types/github';
 import CommitActivitySection from '../ui/CommitActivitySection';
 import { getLanguageColor } from '@/util/githubColors';
 import { motion } from "motion/react";
+import Section from '../ui/Section';
 
 interface Props {
   repo: GitHubRepoFull;
@@ -243,15 +244,6 @@ export default function ProjectFullView({ repo }: Props) {
         </div>
       </div>
     </motion.div>
-  );
-}
-
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div>
-      <h3 className="text-sm font-semibold text-text mb-2">{title}</h3>
-      {children}
-    </div>
   );
 }
 

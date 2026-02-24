@@ -9,6 +9,7 @@ import {
   updateSessionContext,
 } from '@/lib/sessions';
 import { useRouter } from 'next/navigation';
+import { fmtTimer} from '@/util/dateFormatting';
 
 interface ContextOption {
   projects: { id: string; name: string; githubOwner: string; githubName: string }[];
@@ -28,13 +29,6 @@ const SESSION_TYPES = [
 ] as const;
 
 type SessionType = typeof SESSION_TYPES[number]['value'];
-
-const formatTime = (seconds: number) => {
-  const h = Math.floor(seconds / 3600);
-  const m = Math.floor((seconds % 3600) / 60);
-  const s = seconds % 60;
-  return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-};
 
 export default function SessionTimer({ options }: Props) {
   const [active, setActive] = useState<StudySession | null>(null);
@@ -138,7 +132,7 @@ export default function SessionTimer({ options }: Props) {
             )}
           </div>
           <span className="text-2xl font-mono font-bold text-primary">
-            {formatTime(elapsed)}
+            {fmtTimer(elapsed)}
           </span>
         </div>
 

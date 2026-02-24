@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
+import { fmt } from '@/util/dateFormatting';
 
 interface Props {
   sessions: {
@@ -38,14 +39,6 @@ const LEVEL_COLORS = [
 ];
 
 const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
-function formatDuration(minutes: number): string {
-  const h = Math.floor(minutes / 60);
-  const m = minutes % 60;
-  if (h === 0) return `${m}m`;
-  if (m === 0) return `${h}h`;
-  return `${h}h ${m}m`;
-}
 
 function getLevel(minutes: number): number {
   if (minutes === 0) return 0;
@@ -149,7 +142,7 @@ export default function SessionGraph({ sessions, accountCreatedAt }: Props) {
     <div className="space-y-3">
       <div className="flex items-baseline gap-4 text-xs text-text">
         <span>
-          <span className="text-primary font-medium">{formatDuration(data.totalMinutes)}</span> total
+          <span className="text-primary font-medium">{fmt(data.totalMinutes)}</span> total
         </span>
         <span>
           <span className="text-primary font-medium">{data.activeDays}</span> active days
@@ -206,7 +199,7 @@ export default function SessionGraph({ sessions, accountCreatedAt }: Props) {
                           <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover/cell:flex flex-col items-center pointer-events-none">
                             <div className="bg-background border border-border rounded-md px-3 py-2 shadow-xl shadow-black/40 whitespace-nowrap">
                               <p className="text-xs text-primary font-medium">
-                                {day.minutes > 0 ? formatDuration(day.minutes) : 'No sessions'}
+                                {day.minutes > 0 ? fmt(day.minutes) : 'No sessions'}
                               </p>
                               <p className="text-[10px] text-text/60">
                                 {day.date.toLocaleDateString('en-US', {
