@@ -48,6 +48,14 @@ export interface DashboardData {
     startedAt: Date;
     durationMinutes: number | null;
   }[];
+  upcomingGoal: {
+    id: string;
+    title: string;
+    description: string | null;
+    targetDate: Date;
+    projectId: string;
+    projectName: string;
+  } | null;
 }
 
 export async function getDashboardData(): Promise<DashboardData> {
@@ -74,6 +82,7 @@ export async function getDashboardData(): Promise<DashboardData> {
     recentProjects,
     activeCourses,
     recentSessionsRaw,
+    upcomingGoalRaw,
   ] = await Promise.all([
     prisma.user.findUnique({
       where: { id: userId },
@@ -134,6 +143,23 @@ export async function getDashboardData(): Promise<DashboardData> {
         course: { select: { title: true } },
       },
     }),
+
+    prisma.projectGoal.findFirst({
+      where: {
+        completed: false,
+        targetDate: { not: null },
+        project: { userId },
+      },
+      orderBy: { targetDate: 'asc' },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        targetDate: true,
+        projectId: true,
+        project: { select: { name: true } },
+      },
+    }),
   ]);
 
   const totalMinutes = allSessions.reduce((sum, s) => sum + (s.durationMinutes || 0), 0);
@@ -173,5 +199,15 @@ export async function getDashboardData(): Promise<DashboardData> {
       courseTitle: s.course?.title ?? null,
     })),
     allSessions,
+    upcomingGoal: upcomingGoalRaw
+      ? {
+          id: upcomingGoalRaw.id,
+          title: upcomingGoalRaw.title,
+          description: upcomingGoalRaw.description,
+          targetDate: upcomingGoalRaw.targetDate!,
+          projectId: upcomingGoalRaw.projectId,
+          projectName: upcomingGoalRaw.project.name,
+        }
+      : null,
   };
 }

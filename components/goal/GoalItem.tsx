@@ -17,7 +17,13 @@ export default function GoalItem({
 }) {
   const [confirming, setConfirming] = useState(false);
 
-  const isOverdue = goal.targetDate && !goal.completed && new Date(goal.targetDate) < new Date();
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const targetDate = goal.targetDate ? new Date(goal.targetDate) : null;
+  targetDate?.setHours(0, 0, 0, 0);
+
+  const isOverdue = goal.targetDate && !goal.completed && targetDate! < today;
 
   return (
     <motion.div

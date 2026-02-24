@@ -5,7 +5,9 @@ import type { DashboardData } from '@/lib/dashboard';
 import SessionGraph from '@/components/session/SessionGraph';
 import SessionTimer from '@/components/session/SessionTimer';
 import Stat from '../ui/Stat';
+import Card from '../ui/Card';
 import { fmt, relative } from '@/util/dateFormatting';
+import UpcomingGoal from '../goal/UpcomingGoal';
 
 interface Props {
   data: DashboardData;
@@ -13,7 +15,6 @@ interface Props {
     projects: { id: string; name: string; githubOwner: string; githubName: string }[];
     courses: { id: string; title: string }[];
   };
-  activeSession: any;
 }
 
 function greeting(): string {
@@ -24,8 +25,8 @@ function greeting(): string {
   return 'Good evening';
 }
 
-export default function Dashboard({ data, sessionOptions, activeSession }: Props) {
-  const { user, stats, recentProjects, activeCourses, recentSessions, allSessions } = data;
+export default function Dashboard({ data, sessionOptions }: Props) {
+  const { user, stats, recentProjects, activeCourses, recentSessions, allSessions, upcomingGoal } = data;
 
   return (
     <div className="max-w-5xl mx-auto p-6 space-y-8">
@@ -52,6 +53,8 @@ export default function Dashboard({ data, sessionOptions, activeSession }: Props
       <Card title="Activity">
         <SessionGraph sessions={allSessions} accountCreatedAt={user.createdAt} />
       </Card>
+
+      {upcomingGoal && <UpcomingGoal goal={upcomingGoal} />}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card
@@ -160,30 +163,6 @@ export default function Dashboard({ data, sessionOptions, activeSession }: Props
           <p className="text-xs text-text mt-1">Streak</p>
         </div>
       </div>
-    </div>
-  );
-}
-
-function Card({
-  title,
-  action,
-  children,
-}: {
-  title: string;
-  action?: { label: string; href: string };
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="border border-border rounded-lg p-4 overflow-visible">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xs uppercase tracking-wider text-text">{title}</h2>
-        {action && (
-          <Link href={action.href} className="text-xs text-primary hover:underline">
-            {action.label}
-          </Link>
-        )}
-      </div>
-      {children}
     </div>
   );
 }

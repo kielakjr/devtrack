@@ -57,14 +57,6 @@ export default function ProfileView({ data }: Props) {
         <SessionGraph sessions={allSessions} accountCreatedAt={user.createdAt} />
       </Section>
 
-      <Section title="Quick links">
-        <div className="grid grid-cols-3 gap-3">
-          <QuickLink href="/dashboard" label="Dashboard" />
-          <QuickLink href="/projects" label="Projects" />
-          <QuickLink href="/courses" label="Courses" />
-        </div>
-      </Section>
-
       <Section title="Account">
         <div className="space-y-2 text-sm">
           <Row label="Email" value={user.email} />
@@ -127,16 +119,5 @@ function Row({ label, value, mono }: { label: string; value: string; mono?: bool
       <span className="text-text/50">{label}</span>
       <span className={`text-text ${mono ? 'font-mono text-xs' : ''}`}>{value}</span>
     </div>
-  );
-}
-
-function QuickLink({ href, label }: { href: string; label: string }) {
-  return (
-    <Link
-      href={href}
-      className="border border-border rounded-lg p-3 text-center text-sm text-primary hover:border-primary/30 transition-colors"
-    >
-      {label}
-    </Link>
   );
 }

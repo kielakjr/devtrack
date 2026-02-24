@@ -9,6 +9,7 @@ import Badge from '../ui/Badge';
 import Goals from '../goal/Goals';
 import Notes from '../note/Notes';
 import Stat from '../ui/Stat';
+import Card from '../ui/Card';
 import type { ProjectGoal } from '@/lib/goals';
 import type { ProjectNote } from '@/lib/notes';
 
@@ -65,13 +66,13 @@ export default function ProjectFullView({ repo, goals, notes, projectId }: Props
 
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Section title={`Goals (${goals.length})`} border>
+        <Card title={`Goals (${goals.length})`}>
           <Goals projectId={projectId} initialGoals={goals} />
-        </Section>
+        </Card>
 
-        <Section title={`Notes (${notes.length})`} border>
+        <Card title={`Notes (${notes.length})`}>
           <Notes projectId={projectId} initialNotes={notes} />
-        </Section>
+        </Card>
       </div>
 
       <div className="flex flex-wrap gap-2 text-sm">
