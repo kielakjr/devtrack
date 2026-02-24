@@ -1,20 +1,22 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { AnimatePresence } from 'motion/react';
 import {
   ProjectNote,
   createNote,
   updateNote,
   deleteNote,
 } from '@/lib/notes';
+import NoteEditor from './NoteEditor';
+import NoteItem from './NoteItem';
 
 interface Props {
   projectId: string;
   initialNotes: ProjectNote[];
 }
 
-export default function NotesPanel({ projectId, initialNotes }: Props) {
+export default function Notes({ projectId, initialNotes }: Props) {
   const [notes, setNotes] = useState(initialNotes);
   const [newContent, setNewContent] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -89,118 +91,5 @@ export default function NotesPanel({ projectId, initialNotes }: Props) {
         <p className="text-sm text-text/30 text-center py-4">No notes yet</p>
       )}
     </div>
-  );
-}
-
-function NoteItem({
-  note,
-  onEdit,
-  onDelete,
-}: {
-  note: ProjectNote;
-  onEdit: () => void;
-  onDelete: () => void;
-}) {
-  const [confirming, setConfirming] = useState(false);
-
-  const wasEdited = new Date(note.updatedAt).getTime() - new Date(note.createdAt).getTime() > 1000;
-
-  return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
-      className="p-3 rounded-lg border border-border group hover:border-primary/20 transition-colors"
-    >
-      <p className="text-sm text-text whitespace-pre-wrap">{note.content}</p>
-
-      <div className="flex items-center justify-between mt-2">
-        <span className="text-[11px] text-text/30">
-          {new Date(note.createdAt).toLocaleDateString('en-US', {
-            month: 'short',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-          })}
-          {wasEdited && ' (edited)'}
-        </span>
-
-        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-          <button
-            onClick={onEdit}
-            className="px-2 py-1 text-[11px] text-text/50 hover:text-primary hover:bg-secondary/30 rounded cursor-pointer transition-colors"
-          >
-            Edit
-          </button>
-          {confirming ? (
-            <button
-              onClick={() => { onDelete(); setConfirming(false); }}
-              className="px-2 py-1 text-[11px] text-red-400 hover:bg-red-500/20 rounded cursor-pointer transition-colors"
-            >
-              Confirm
-            </button>
-          ) : (
-            <button
-              onClick={() => setConfirming(true)}
-              onBlur={() => setConfirming(false)}
-              className="px-2 py-1 text-[11px] text-text/50 hover:text-red-400 hover:bg-red-500/20 rounded cursor-pointer transition-colors"
-            >
-              Delete
-            </button>
-          )}
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-function NoteEditor({
-  note,
-  onSave,
-  onCancel,
-}: {
-  note: ProjectNote;
-  onSave: (content: string) => Promise<void>;
-  onCancel: () => void;
-}) {
-  const [content, setContent] = useState(note.content);
-  const [saving, setSaving] = useState(false);
-
-  const handleSave = async () => {
-    if (!content.trim() || saving) return;
-    setSaving(true);
-    try {
-      await onSave(content);
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  return (
-    <motion.div layout className="border border-primary/30 rounded-lg p-3 space-y-2">
-      <textarea
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        autoFocus
-        rows={3}
-        className="w-full px-3 py-2 border border-border rounded text-sm bg-background text-text focus:outline-none focus:border-primary resize-none"
-      />
-      <div className="flex justify-end gap-2">
-        <button
-          onClick={onCancel}
-          className="px-3 py-1.5 text-xs text-text hover:bg-secondary/30 rounded cursor-pointer transition-colors"
-        >
-          Cancel
-        </button>
-        <button
-          onClick={handleSave}
-          disabled={!content.trim() || saving}
-          className="px-3 py-1.5 text-xs bg-primary text-background rounded cursor-pointer hover:bg-primary/80 transition-colors disabled:opacity-50"
-        >
-          Save
-        </button>
-      </div>
-    </motion.div>
   );
 }

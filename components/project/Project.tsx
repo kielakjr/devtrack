@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { motion } from "motion/react";
 import { getLanguageColor } from '@/util/githubColors';
 import { relative } from '@/util/dateFormatting';
+import Badge from '../ui/Badge';
 
 interface ProjectProps {
   project: ProjectType;
@@ -85,9 +86,9 @@ const Project: React.FC<ProjectProps> = ({ project, onDelete, index }) => {
               {project.name}
             </span>
           </div>
-          <span className="text-xs px-2 py-0.5 rounded-full border border-border text-text/50">
+          <Badge>
             {repoDetails?.private ? "Private" : "Public"}
-          </span>
+          </Badge>
         </div>
 
         <p className="text-sm text-text line-clamp-1 mb-3">

@@ -2,8 +2,6 @@ import { getRepoFull } from '@/lib/github';
 import ProjectFullView from '@/components/project/ProjectFullView';
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
-import Goals from '@/components/goal/Goals';
-import Notes from '@/components/note/Notes';
 import { getGoals } from '@/lib/goals';
 import { getNotes } from '@/lib/notes';
 import { auth } from '@/auth';
@@ -35,27 +33,8 @@ export default async function ProjectPage({ params }: PageProps) {
   return (
     <div className="max-w-5xl mx-auto p-6">
       <Suspense fallback={<p className="text-text text-center">Loading repository details...</p>}>
-        <ProjectFullView repo={repoData} />
+        <ProjectFullView repo={repoData} goals={goals} notes={notes} projectId={project.id} />
       </Suspense>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Section title={`Goals (${goals.length})`}>
-          <Goals projectId={project.id} initialGoals={goals} />
-        </Section>
-
-        <Section title={`Notes (${notes.length})`}>
-          <Notes projectId={project.id} initialNotes={notes} />
-        </Section>
-      </div>
-    </div>
-  );
-}
-
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div className="border border-border rounded-lg p-4">
-      <h2 className="text-xs uppercase tracking-wider text-text mb-4">{title}</h2>
-      {children}
     </div>
   );
 }

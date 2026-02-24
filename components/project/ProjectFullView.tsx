@@ -5,12 +5,21 @@ import CommitActivitySection from '../ui/CommitActivitySection';
 import { getLanguageColor } from '@/util/githubColors';
 import { motion } from "motion/react";
 import Section from '../ui/Section';
+import Badge from '../ui/Badge';
+import Goals from '../goal/Goals';
+import Notes from '../note/Notes';
+import Stat from '../ui/Stat';
+import type { ProjectGoal } from '@/lib/goals';
+import type { ProjectNote } from '@/lib/notes';
 
 interface Props {
   repo: GitHubRepoFull;
+  goals: ProjectGoal[];
+  notes: ProjectNote[];
+  projectId: string;
 }
 
-export default function ProjectFullView({ repo }: Props) {
+export default function ProjectFullView({ repo, goals, notes, projectId }: Props) {
   const totalBytes = repo.languages
     ? Object.values(repo.languages).reduce((a, b) => a + b, 0)
     : 0;
@@ -52,6 +61,17 @@ export default function ProjectFullView({ repo }: Props) {
         <Stat label="Forks" value={repo.forks_count} />
         <Stat label="Issues" value={repo.open_issues_count} />
         <Stat label="Watchers" value={repo.watchers_count} />
+      </div>
+
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Section title={`Goals (${goals.length})`} border>
+          <Goals projectId={projectId} initialGoals={goals} />
+        </Section>
+
+        <Section title={`Notes (${notes.length})`} border>
+          <Notes projectId={projectId} initialNotes={notes} />
+        </Section>
       </div>
 
       <div className="flex flex-wrap gap-2 text-sm">
@@ -244,22 +264,5 @@ export default function ProjectFullView({ repo }: Props) {
         </div>
       </div>
     </motion.div>
-  );
-}
-
-function Stat({ label, value }: { label: string; value: number }) {
-  return (
-    <div className="border border-border rounded-lg p-3 text-center">
-      <p className="text-xl font-bold text-primary">{value.toLocaleString()}</p>
-      <p className="text-xs text-text">{label}</p>
-    </div>
-  );
-}
-
-function Badge({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="px-3 py-1 rounded-full text-xs border border-border text-text">
-      {children}
-    </span>
   );
 }
