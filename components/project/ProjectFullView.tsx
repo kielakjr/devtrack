@@ -1,7 +1,7 @@
 'use client';
 
 import type { GitHubRepoFull } from '@/lib/types/github';
-import CommitGraph from '../ui/CommitGraph';
+import CommitActivitySection from '../ui/CommitActivitySection';
 import { getLanguageColor } from '@/util/githubColors';
 import { motion } from "motion/react";
 
@@ -218,10 +218,13 @@ export default function ProjectFullView({ repo }: Props) {
           </div>
         </Section>
       )}
-
-      {repo.commit_activity && repo.commit_activity.length > 0 && (
+      {repo.commit_activity && (
         <Section title="Commit Activity (last year)">
-          <CommitGraph activity={repo.commit_activity} />
+          <CommitActivitySection
+            owner={repo.owner.login}
+            repo={repo.name}
+            initialActivity={repo.commit_activity}
+          />
         </Section>
       )}
 

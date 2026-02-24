@@ -38,6 +38,38 @@ async function ghFetch<T>(path: string, token: string): Promise<T> {
   return res.json();
 }
 
+async function ghFetchStats<T>(path: string, token: string): Promise<T | null> {
+  const res = await fetch(`https://api.github.com${path}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/vnd.github+json",
+    },
+    cache: 'no-store',
+  });
+
+  if (res.status === 200) return res.json();
+  return null;
+}
+
+export async function getCommitActivity(
+  owner: string,
+  repo: string
+): Promise<GitHubWeeklyActivity[]> {
+  const token = await getToken();
+  const data = await ghFetchStats<any[]>(
+    `/repos/${owner}/${repo}/stats/commit_activity`,
+    token
+  );
+
+  if (!Array.isArray(data)) return [];
+
+  return data.map((w): GitHubWeeklyActivity => ({
+    week: w.week,
+    total: w.total,
+    days: w.days,
+  }));
+}
+
 export async function getRepos(): Promise<GitHubRepoBasic[]> {
   const token = await getToken();
   return ghFetch<GitHubRepoBasic[]>("/user/repos?per_page=100&sort=updated", token);

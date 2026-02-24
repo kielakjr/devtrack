@@ -64,3 +64,31 @@ export const deleteProject = async (projectId: string) => {
 
   await prisma.project.delete({ where: { id: projectId } });
 };
+
+export const getProjectById = async (projectId: string): Promise<Project | null> => {
+  const session = await auth();
+  if (!session?.user?.accessToken) throw new Error("No access token found");
+
+  const project = await prisma.project.findUnique({
+    where: { id: projectId },
+  });
+  if (!project) return null;
+  if (project.userId !== session.user.id) throw new Error("Unauthorized");
+
+  return project;
+};
+
+export const getProjectByGitHub = async (owner: string, name: string): Promise<Project | null> => {
+  const session = await auth();
+  if (!session?.user?.accessToken) throw new Error("No access token found");
+
+  const project = await prisma.project.findFirst({
+    where: {
+      userId: session.user.id,
+      githubOwner: owner,
+      githubName: name,
+    },
+  });
+
+  return project;
+};

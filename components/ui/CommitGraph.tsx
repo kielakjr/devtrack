@@ -9,6 +9,8 @@ interface Props {
 export default function CommitGraph({ activity }: Props) {
   const recent = activity.slice(-26);
   const maxTotal = Math.max(...recent.map((w) => w.total), 1);
+  const totalCommits = recent.reduce((sum, w) => sum + w.total, 0);
+  const avgPerWeek = (totalCommits / recent.length).toFixed(1);
 
   return (
     <div className="space-y-3">
@@ -19,7 +21,7 @@ export default function CommitGraph({ activity }: Props) {
           return (
             <div
               key={week.week}
-              className="flex-1 bg-green-400 hover:bg-green-500 rounded-t transition-colors cursor-default"
+              className="flex-1 bg-primary/60 hover:bg-primary rounded-t transition-colors cursor-default"
               style={{ height: `${Math.max(height, 2)}%` }}
               title={`Week ${date.toLocaleDateString("en-US")}: ${week.total} commits`}
             />
@@ -27,7 +29,7 @@ export default function CommitGraph({ activity }: Props) {
         })}
       </div>
 
-      <div className="flex justify-between text-xs text-gray-400">
+      <div className="flex justify-between text-xs text-text/40">
         <span>
           {new Date(recent[0]?.week * 1000).toLocaleDateString("en-US", {
             month: "short",
@@ -42,18 +44,12 @@ export default function CommitGraph({ activity }: Props) {
         </span>
       </div>
 
-      <div className="flex gap-4 text-xs text-gray-500">
+      <div className="flex gap-4 text-xs text-text/50">
         <span>
-          Total:{" "}
-          <strong className="text-gray-700">
-            {recent.reduce((sum, w) => sum + w.total, 0)} commits
-          </strong>
+          Total: <strong className="text-primary">{totalCommits} commits</strong>
         </span>
         <span>
-          Average:{" "}
-          <strong className="text-gray-700">
-            {(recent.reduce((sum, w) => sum + w.total, 0) / recent.length).toFixed(1)} / week
-          </strong>
+          Average: <strong className="text-primary">{avgPerWeek} / week</strong>
         </span>
       </div>
     </div>

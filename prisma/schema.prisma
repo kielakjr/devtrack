@@ -67,7 +67,6 @@ model Project {
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  tasks    Task[]
   sessions StudySession[]
   goals    ProjectGoal[]
   notes    ProjectNote[]
@@ -93,27 +92,12 @@ enum Priority {
   URGENT
 }
 
-model Task {
-  id        String     @id @default(cuid())
-  title     String
-  completed Boolean    @default(false)
-  priority  Priority   @default(MEDIUM)
-  dueDate   DateTime?
-
-  projectId String
-  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([projectId, completed])
-}
-
 model ProjectGoal {
   id          String   @id @default(cuid())
   title       String
   description String?
   targetDate  DateTime?
+  priority    Priority  @default(MEDIUM)
   completed   Boolean  @default(false)
   completedAt DateTime?
 
