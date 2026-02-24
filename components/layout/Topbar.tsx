@@ -12,7 +12,7 @@ const Topbar: React.FC = async () => {
       <Link href="/" className="text-2xl font-bold text-primary">DevTrack</Link>
       <div className="flex items-center space-x-4">
         {session ? (
-          <h1 className="font-bold text-primary">Hi, {getUserName()} !</h1>
+          <Link href="/profile" className="font-bold text-primary">Hi, {getUserName()} !</Link>
         ) : (
           <Link href="/signin" className="text-primary hover:text-primary/80 transition bg-secondary px-3 py-1 rounded cursor-pointer">
             Sign In

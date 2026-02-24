@@ -17,7 +17,7 @@ const Projects: React.FC<ProjectsProps> = ({ projects }) => {
       ) : (
         <ul className="space-y-2">
           <AnimatePresence>
-          {projectsList.sort((a, b) => a.name.localeCompare(b.name)).map((project, index) => (
+          {projectsList.sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime()).map((project, index) => (
             <Project key={project.id} project={project} onDelete={() => setProjectsList(projectsList.filter(p => p.id !== project.id))} index={index} />
           ))}
           </AnimatePresence>
