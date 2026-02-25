@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client"
+  engineType = "library"
   output   = "../app/generated/prisma"
 }
 
