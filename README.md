@@ -2,6 +2,10 @@
 
 A developer study tracker built with Next.js. Track your coding sessions, manage GitHub projects, monitor course progress, set goals, and visualize your learning journey — all in one place.
 
+## Live Demo
+
+[Try DevTrack live](https://devtrack-silk.vercel.app/)
+
 ## Features
 
 - **GitHub OAuth** — Sign in with your GitHub account, no passwords needed
